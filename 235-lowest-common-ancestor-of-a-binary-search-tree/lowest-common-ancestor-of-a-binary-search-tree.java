@@ -15,7 +15,6 @@ class Solution {
     private TreeNode solve(TreeNode root,TreeNode p,TreeNode q){
         if(p.val<root.val && q.val<root.val)return solve(root.left, p, q);
         if(p.val>root.val && q.val>root.val)return solve(root.right, p, q);
-        if(p.val<root.val && q.val>root.val)return root;
         return root;
     }
 }
