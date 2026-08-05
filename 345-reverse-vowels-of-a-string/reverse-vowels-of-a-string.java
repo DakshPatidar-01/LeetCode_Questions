@@ -13,9 +13,7 @@ class Solution {
             arr[right]=temp;
             left++;right--;
         }
-        String newString = "";
-        for(char x: arr)newString+=x;
-        return newString;
+        return new String(arr);
     }
 
     private static boolean isVowel(char ch){
