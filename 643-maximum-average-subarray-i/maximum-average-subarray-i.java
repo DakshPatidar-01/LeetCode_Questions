@@ -1,6 +1,5 @@
 class Solution {
     public double findMaxAverage(int[] nums, int k) {
-        if(nums.length<k)return -1; 
         double windSum=0;
         for(int i=0;i<k;i++){
             windSum+=nums[i];
