@@ -8,23 +8,31 @@
  *     ListNode(int val, ListNode next) { this.val = val; this.next = next; }
  * }
  */
+
 class Solution {
     public ListNode removeNodes(ListNode head) {
-        Stack<ListNode> st = new Stack<>();
+        head=reverse(head);
         ListNode curr = head;
-        ListNode del =null;
-        while(curr!=null){
-            while(!st.isEmpty() && st.peek().val<curr.val){
-                del =st.pop();
-                del=curr;
+        int max = curr.val;
+        while(curr!=null && curr.next!=null){
+            if(curr.next.val<max){
+                curr.next=curr.next.next;
+            }else{
+                curr=curr.next;
+                max=curr.val;
             }
-            if(!st.isEmpty())st.peek().next=curr;
-            else head=curr;
-            st.push(curr);
-            curr=curr.next;
         }
-        if(!st.isEmpty())st.peek().next=null;
-        else head=null;
-        return head;
+        return reverse(head);
+    }
+
+    private ListNode reverse(ListNode head){
+        ListNode prev=null;
+        while(head!=null){
+            ListNode next = head.next;
+            head.next=prev;
+            prev=head;
+            head=next;
+        }
+        return prev;
     }
 }
