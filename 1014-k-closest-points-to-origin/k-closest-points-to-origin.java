@@ -1,23 +1,38 @@
 class Solution {
     public int[][] kClosest(int[][] points, int k) {
-        int[][] ans = new int[k][2];
-        PriorityQueue<int[]> pq = new PriorityQueue<>((a,b)->{
-            int distA = a[0] *a[0]+a[1]*a[1];
-            int distB = b[0]*b[0]+b[1]*b[1];
-            return Integer.compare(distB, distA);
-        });
+        int left=0,right=points.length-1;;
+        while(left<=right){
+            int pivotIdx = partition(points,left,right);
+            if(pivotIdx==k)break;
+            else if(pivotIdx<k)left=pivotIdx+1;
+            else right=pivotIdx-1;
+        }
 
-        for(int i=0;i<points.length;i++){
-            pq.add(points[i]);
-            if(pq.size()>k)pq.poll();
+        return Arrays.copyOfRange(points, 0, k);
+    }
+
+    private int partition(int points[][],int left,int right){
+        int pivot[] = points[right];
+        int pivotDist = dist(pivot);
+        int i=left;
+        for(int j=left;j<right;j++){
+            if(dist(points[j])<=pivotDist){
+                swap(points,i,j);
+                i++;
+            }
         }
-        int i=k-1;
-        while(!pq.isEmpty() && i>=0){
-            int[] curr = pq.poll();
-            ans[i][0]=curr[0];
-            ans[i][1]=curr[1];
-            i--;
-        }
-        return ans;
+
+        swap(points,i,right);
+        return i;
+    }
+
+    private int dist(int point[]){
+        return point[0]*point[0]+point[1]*point[1];
+    }
+
+    private void swap(int points[][],int i,int j){
+        int temp[] = points[i];
+        points[i]=points[j];
+        points[j]=temp;
     }
 }
