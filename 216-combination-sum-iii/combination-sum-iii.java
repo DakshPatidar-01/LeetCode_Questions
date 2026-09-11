@@ -1,30 +1,23 @@
-import java.util.ArrayList;
-import java.util.List;
-
 class Solution {
     List<List<Integer>> ans = new ArrayList<>();
     public List<List<Integer>> combinationSum3(int k, int n) {
         if(n<=2)return ans;
-        find(1,k,n,new ArrayList<>());
+        find(1,k,n,new ArrayList<>(),n);
         return ans;
     }
 
-    private void find(int idx,int k,int n,ArrayList<Integer> curr){
-        if(curr.size()==k){
-            if(isValid(curr,n))ans.add(new ArrayList<>(curr));
+    private void find(int idx,int k,int n,ArrayList<Integer> curr,int remaining){
+        if(curr.size()==k && remaining==0){
+            ans.add(new ArrayList<>(curr));
             return;
         }
 
         for(int i=idx;i<=9;i++){
             curr.add(i);
-            find(i+1, k, n, curr);
+            remaining-=i;
+            find(i+1, k, n, curr,remaining);
             curr.remove(curr.size()-1);
+            remaining+=i;
         }
-    }
-
-    private boolean isValid(ArrayList<Integer> curr,int n){
-        int sum=0;
-        for(int i=0;i<curr.size();i++)sum+=curr.get(i);
-        return sum==n;
     }
 }
