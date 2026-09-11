@@ -7,8 +7,8 @@ class Solution {
     }
 
     private void find(int idx,int k,int n,ArrayList<Integer> curr,int remaining){
-        if(curr.size()==k && remaining==0){
-            ans.add(new ArrayList<>(curr));
+        if(curr.size()==k){
+            if(remaining==0)ans.add(new ArrayList<>(curr));
             return;
         }
 
