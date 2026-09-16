@@ -15,17 +15,17 @@
  */
 class Solution {
     public TreeNode invertTree(TreeNode root) {
-        TreeNode curr = root;
-        solveLeft(curr);
-        return curr;
+        if(root==null)return null;
+        solve(root);
+        return root;
     }
 
-    private void solveLeft(TreeNode curr){
-        if(curr==null)return;
-        TreeNode temp = curr.left;
-        curr.left=curr.right;
-        curr.right=temp;
-        solveLeft(curr.left);
-        solveLeft(curr.right);
+    private void solve(TreeNode root){
+        if(root==null)return;
+        solve(root.left);
+        solve(root.right);
+        TreeNode temp = root.left;
+        root.left=root.right;
+        root.right=temp;
     }
 }
