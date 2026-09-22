@@ -1,28 +1,26 @@
 class Solution {
-
+    int ans=0;
     public int numIslands(char[][] grid) {
-        int rows = grid.length;
-        int cols = grid[0].length;
-        boolean[][] visited = new boolean[rows][cols];
-        int count = 0;
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                    if (grid[i][j] == '1' && !visited[i][j]) {
-                    count++;
-                    dfs(grid, i, j, visited);
+        int n=grid.length,m=grid[0].length;
+        boolean [][] visted = new boolean[n][m];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(grid[i][j]=='1'&& !visted[i][j]){
+                    checkLand(i, j, grid, visted);
+                    ans++;
                 }
             }
         }
-        return count;
+        return ans;
     }
 
-    private void dfs(char[][] grid, int i, int j, boolean[][] visited) {
-        if (i < 0 || i >= grid.length || j < 0 || j >= grid[0].length)return;
-        if (grid[i][j] == '0' || visited[i][j])return;
-        visited[i][j] = true;
-        dfs(grid, i - 1, j, visited); // Up
-        dfs(grid, i + 1, j, visited); // Down
-        dfs(grid, i, j - 1, visited); // Left
-        dfs(grid, i, j + 1, visited); // Right
+    private void checkLand(int i,int j,char grid[][],boolean visted[][]){
+        if(i<0 || i>=grid.length || j<0|| j>=grid[0].length || grid[i][j]=='0')return;
+        if(visted[i][j])return;
+        visted[i][j]=true;
+        checkLand(i+1, j, grid, visted);
+        checkLand(i-1, j, grid, visted);
+        checkLand(i, j+1, grid, visted);
+        checkLand(i, j-1, grid, visted);
     }
 }
