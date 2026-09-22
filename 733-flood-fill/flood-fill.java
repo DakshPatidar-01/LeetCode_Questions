@@ -1,15 +1,6 @@
 class Solution {
     public int[][] floodFill(int[][] image, int sr, int sc, int color) {
-        boolean flag = false;
-        for(int i=0;i<image.length;i++){
-            for(int j=0;j<image[0].length;j++){
-                if(i==sr&&j==sc){
-                    fillColor(i,j,image,color,image[sr][sc]);
-                    return image;
-                }
-            }
-            if(flag)break;
-        }
+        fillColor(sr,sc,image,color,image[sr][sc]);
         return image;
     }
 
