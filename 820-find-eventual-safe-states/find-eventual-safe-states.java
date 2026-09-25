@@ -1,26 +1,28 @@
 class Solution {
     public List<Integer> eventualSafeNodes(int[][] graph) {
-        int n=graph.length;
-        List<List<Integer>> rev=new ArrayList<>();
-        int[] out=new int[n];
-        Queue<Integer> q=new LinkedList<>();
-        for(int i=0;i<n;i++) rev.add(new ArrayList<>());
+        int n = graph.length;
+        boolean[] visited = new boolean[n];
+        boolean[] path = new boolean[n];
         for(int i=0;i<n;i++){
-            out[i]=graph[i].length;
-            for(int next:graph[i])rev.get(next).add(i);
+            if(!visited[i])dfs(i,graph,visited,path);
         }
-        for(int i=0;i<n;i++)if(out[i]==0) q.add(i);
-        boolean[] safe=new boolean[n];
-        while(!q.isEmpty()){
-            int node=q.poll();
-            safe[node]=true;
-            for(int prev:rev.get(node)){
-                if(--out[prev]==0)q.add(prev);
-            }
+
+        List<Integer> ans = new ArrayList<>();
+        for(int i=0;i<path.length;i++){
+            if(!path[i])ans.add(i);
         }
-        List<Integer> ans=new ArrayList<>();
-        for(int i=0;i<n;i++)
-            if(safe[i]) ans.add(i);
         return ans;
+    }
+
+    private boolean dfs(int node, int[][] graph,boolean[] visited ,boolean[] path) {
+        visited[node]=true;
+        path[node] = true;
+        for(int next : graph[node]){
+            if(!visited[next]){
+                if(!dfs(next,graph,visited,path))return false;
+            }else if (path[next])return false;
+        }
+        path[node] = false;
+        return true;
     }
 }
