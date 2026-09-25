@@ -1,33 +1,26 @@
 class Solution {
     public boolean canFinish(int numCourses, int[][] prerequisites) {
+        int n = numCourses;
+        boolean visited[] = new boolean[n];
+        boolean path[] = new boolean[n];
         List<List<Integer>> graph = new ArrayList<>();
-        for (int i = 0; i < numCourses; i++) {
-            graph.add(new ArrayList<>());
-        }
-        for(int[] edge:prerequisites){
-            int u = edge[1];
-            int v=edge[0];
-            graph.get(u).add(v);
-        }
-        int[] state = new int[numCourses]; // 0=unvisited, 1=visiting, 2=visited
-        for (int i = 0; i < numCourses; i++) {
-            if (hasCycle(graph, i, state)) {
-                return false;
-            }
+        for(int i=0;i<n;i++)graph.add(new ArrayList<>());
+        for(int e[]:prerequisites)graph.get(e[1]).add(e[0]);
+        for(int i=0;i<n;i++){
+            if(!visited[i] &&!dfs(i,graph,visited,path))return false;
         }
         return true;
     }
 
-    private boolean hasCycle(List<List<Integer>> graph, int node, int[] state) {
-        if (state[node] == 1) return true;
-        if (state[node] == 2) return false;
-        state[node] = 1;
-        for (int next : graph.get(node)) {
-            if (hasCycle(graph, next, state)) {
-                return true;
-            }
+    private boolean dfs(int node,List<List<Integer>> graph,boolean[] visited,boolean[] path){
+        visited[node]=true;
+        path[node]=true;
+        for(int next:graph.get(node)){
+            if(!visited[next]){
+                if(!dfs(next, graph, visited, path))return false;
+            }else if(path[next])return false;
         }
-        state[node] = 2;
-        return false;
+        path[node] = false;
+        return true;
     }
 }
