@@ -1,16 +1,14 @@
 class Solution {
     public int climbStairs(int n) {
-        if(n==1 || n==2 || n==3)return n;
-        int last = 1;
-        int first = 2;
-        int curr=0;
-        for(int i = 3; i <= n; i++)
-        {
-            curr = last + first;
-            last = first;
-            first = curr;
-        }
+        if(n<=3)return n;
+        int memo[] = new int[n+1];
+        Arrays.fill(memo, -1);
+        for(int i=0;i<4;i++)memo[i]=i;
+        return solve(n,memo);
+    }
 
-        return first;
+    private int solve(int n,int[] memo){
+        if(memo[n]!=-1)return memo[n];
+        return memo[n]=solve(n-1, memo)+solve(n-2, memo);
     }
 }
