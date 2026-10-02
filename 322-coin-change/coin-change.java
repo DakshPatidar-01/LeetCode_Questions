@@ -1,14 +1,20 @@
 class Solution {
     public int coinChange(int[] coins, int amount) {
-        if(amount<1)return 0;
-        int dp[] = new int[amount+1];
-        dp[0]=0;
-        for(int i=1;i<=amount;i++){
-            dp[i]=Integer.MAX_VALUE;
-            for(int coin:coins){
-                if(coin<=i && dp[i-coin]!=Integer.MAX_VALUE)dp[i]=Math.min(dp[i], 1+dp[i-coin]);
-            }
+        int[] memo=new int[amount+1];
+        Arrays.fill(memo,-2);
+        int ans=solve(coins,amount,memo);
+        return ans==Integer.MAX_VALUE ? -1 : ans;
+    }
+
+    private int solve(int[] coins,int amount,int[] memo) {
+        if(amount==0)return 0;
+        if(amount<0)return Integer.MAX_VALUE;
+        if(memo[amount]!=-2)return memo[amount];
+        int ans=Integer.MAX_VALUE;
+        for(int coin:coins){
+            int next=solve(coins,amount-coin,memo);
+            if(next!=Integer.MAX_VALUE)ans=Math.min(ans,1+next);
         }
-        return dp[amount]==Integer.MAX_VALUE?-1:dp[amount];
+        return memo[amount]=ans;
     }
 }
