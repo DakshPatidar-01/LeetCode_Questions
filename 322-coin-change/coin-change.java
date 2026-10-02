@@ -1,22 +1,14 @@
 class Solution {
     public int coinChange(int[] coins, int amount) {
-         // Check edge case
-        if (amount < 1) return 0;
-
-        // Create DP array
-        int[] minCoinsDP = new int[amount + 1];
-
-        for (int i = 1; i <= amount; i++) {
-
-        minCoinsDP[i] = Integer.MAX_VALUE;
-
-        // Try each coin
-        for (int coin : coins) {
-            if (coin <= i && minCoinsDP[i - coin] != Integer.MAX_VALUE)
-            minCoinsDP[i] = Math.min(minCoinsDP[i], 1 + minCoinsDP[i - coin]);
+        if(amount<1)return 0;
+        int dp[] = new int[amount+1];
+        dp[0]=0;
+        for(int i=1;i<=amount;i++){
+            dp[i]=Integer.MAX_VALUE;
+            for(int coin:coins){
+                if(coin<=i && dp[i-coin]!=Integer.MAX_VALUE)dp[i]=Math.min(dp[i], 1+dp[i-coin]);
+            }
         }
-        }
-
-        return minCoinsDP[amount] == Integer.MAX_VALUE ? -1 : minCoinsDP[amount];
+        return dp[amount]==Integer.MAX_VALUE?-1:dp[amount];
     }
 }
