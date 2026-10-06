@@ -3,16 +3,23 @@ class Solution {
         int n=obstacleGrid.length,m=obstacleGrid[0].length;
         if(obstacleGrid[n-1][m-1]==1)return 0;
         int dp[][] = new int[n][m];
-        for(int e[]:dp)Arrays.fill(e,-1);
-        return solve(0,0,n,m,obstacleGrid,dp);
-    }
-
-    private int solve(int i,int j,int n,int m,int[][] obstacleGrid,int[][] dp){
-        if(i<0||j<0||i>=n||j>=m||obstacleGrid[i][j]==1)return 0;
-        if(i==n-1 && j==m-1) return 1;
-        if(dp[i][j]!=-1)return dp[i][j];
-        int down = solve(i+1 , j, n, m, obstacleGrid,dp);
-        int right = solve(i, j+1, n, m, obstacleGrid,dp);
-        return dp[i][j]=right+down;
+        //col
+        for(int i=0;i<m;i++){
+            if(obstacleGrid[0][i]==1)break;
+            dp[0][i]=1;
+        }
+        //rows
+        for(int i=0;i<n;i++){
+            if(obstacleGrid[i][0]==1)break;
+            dp[i][0]=1;
+        }
+        for(int i=0;i<n;i++){
+            for(int j=0;j<m;j++){
+                if(i==0 || j==0)continue;
+                if(obstacleGrid[i][j]==1)dp[i][j]=0;
+                else dp[i][j]=dp[i-1][j]+dp[i][j-1];
+            }
+        }
+        return dp[n-1][m-1];
     }
 }
