@@ -1,17 +1,17 @@
 class Solution {
     public int findTargetSumWays(int[] nums, int target) {
-        Map<String,Integer> map = new HashMap<>();
-        return solve(0,0,nums,target,map);
+        Map<Integer,Integer> dp = new HashMap<>();
+        dp.put(0,1);
+        for(int num:nums){
+            Map<Integer,Integer> nextDp = new HashMap<>();
+            for(int sum:dp.keySet()){
+                int count = dp.get(sum);
+                nextDp.put(sum+num, nextDp.getOrDefault(sum+num, 0)+count);
+                nextDp.put(sum-num, nextDp.getOrDefault(sum-num, 0)+count);
+            }
+            dp=nextDp;
+        }
+        return dp.getOrDefault(target,0);
     }
 
-    private int solve(int idx,int currSum,int[] nums,int target,Map<String,Integer> map){
-        if(idx==nums.length)return currSum==target?1:0;
-        String key = idx+","+currSum;
-        if(map.containsKey(key))return map.get(key);
-        int plus = solve(idx+1, currSum+nums[idx], nums, target,map);
-        int minus = solve(idx+1, currSum-nums[idx], nums, target,map);
-        int ways = plus+minus;
-        map.put(key, ways);
-        return ways;
-    }
 }
