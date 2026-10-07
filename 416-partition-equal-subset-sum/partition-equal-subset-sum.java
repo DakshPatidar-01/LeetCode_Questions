@@ -9,6 +9,7 @@ class Solution {
         for(int num:nums){
             for(int s=target;s>=num;s--){
                 dp[s]=dp[s]||dp[s-num];
+                if(dp[target]==true)return true;
             }
         }
         return dp[target];
